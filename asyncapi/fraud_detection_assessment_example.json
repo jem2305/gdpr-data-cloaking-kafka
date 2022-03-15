@@ -1,0 +1,13 @@
+{
+    "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+    "ruleSetsAndDecisionTreeInstances": [
+        {
+            "workProduct": "STD_TXN_ASSESSMENT",
+            "testResult": "DETECTED"
+        }
+    ],
+    "transactionReference": {
+        "transactionId": "75906707-8c31-479c-b354-aa805c4cefbc",
+        "arrangementId": 1000000000
+    }
+}

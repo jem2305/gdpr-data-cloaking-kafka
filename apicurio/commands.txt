@@ -1,0 +1,15 @@
+
+# Install Strimzi Kafka
+helm install strimzi strimzi/strimzi-kafka-operator --version 0.28.0 --namespace kafka
+kubectl create -f kafka.yaml -n kafka
+
+
+# https://operatorhub.io/operator/apicurio-registry
+curl -sL https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.20.0/install.sh | bash -s v0.20.0
+kubectl create -f https://operatorhub.io/install/apicurio-registry.yaml
+
+
+# Kafka Tools
+kubectl run kafka-tools --image quay.io/strimzi/kafka:0.28.0-kafka-3.1.0 -it -- /bin/sh
+./kafka-topics.sh --bootstrap-server strimzi-kafka-kafka-bootstrap:9092 --list
+

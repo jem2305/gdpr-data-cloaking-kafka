@@ -1,0 +1,11 @@
+apiVersion: registry.apicur.io/v1
+kind: ApicurioRegistry
+metadata:
+  name: apicurio-registry
+spec:
+  configuration:
+    persistence: "kafkasql"
+    kafkasql:
+      bootstrapServers: "strimzi-kafka-kafka-bootstrap:9092"
+  deployment:
+    host: apicurio.192.168.59.100.nip.io

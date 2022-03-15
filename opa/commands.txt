@@ -1,0 +1,14 @@
+# Create Bundles
+cd bundles/alerts && tar -czvf ../../bin/alerts.tar.gz .manifest cloaking && cd ../..
+cd bundles/frauddetection && tar -czvf ../../bin/frauddetection.tar.gz .manifest frauddetection && cd ../..
+
+# Inspect Bundles
+tar tzf bin/alerts.tar.gz
+tar tzf bin/frauddetection.tar.gz
+
+# Evaluate local data
+opa eval --bundle bin/alerts.tar.gz --bundle bin/frauddetection.tar.gz --input fraud_detection_assessment_example.json "data.frauddetection.input_is_cloaked"
+
+# Run local HTTP & OPA Server
+npx http-server bin
+opa run -s -c config.yaml
