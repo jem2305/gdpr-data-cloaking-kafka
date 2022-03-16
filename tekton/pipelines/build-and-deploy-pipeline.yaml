@@ -19,13 +19,17 @@ spec:
       default: src
     - name: dockerfile
       default: ./Dockerfile
-    - name: pathToYamlFile
-      description: The path to the yaml file to deploy within the git source
     - name: imageUrl
       description: Image name including repository
     - name: imageTag
       description: Image tag
       default: "latest"
+    - name: chartsDir
+      description: Directory for Helm chart to use for deployment
+      default: charts/
+    - name: releaseName
+      description: Name to use for the Helm release during deployment
+      default: my-app
   tasks:
     - name: clone-repo
       taskRef:
