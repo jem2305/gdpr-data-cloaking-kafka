@@ -66,6 +66,8 @@ spec:
     - name: deploy-to-cluster
       taskRef:
         name: helm-upgrade-from-source
+      runAfter:
+        - source-to-image
       workspaces:
         - name: source
           workspace: git-source
