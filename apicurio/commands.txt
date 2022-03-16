@@ -1,7 +1,7 @@
 
 # Install Strimzi Kafka
-helm install strimzi strimzi/strimzi-kafka-operator --version 0.28.0 --namespace kafka
-kubectl create -f kafka.yaml -n kafka
+helm install strimzi strimzi/strimzi-kafka-operator --version 0.28.0 --namespace default
+kubectl create -f kafka.yaml -n default
 
 
 # https://operatorhub.io/operator/apicurio-registry

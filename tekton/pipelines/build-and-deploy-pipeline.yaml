@@ -6,7 +6,7 @@ spec:
   workspaces:
     - name: git-source
       description: The git repo
-    - name: docker-config
+    - name: dockerconfig
       description: Contains config.json for Docker Login
   params:
     - name: gitUrl
@@ -17,6 +17,8 @@ spec:
     - name: pathToContext
       description: The path to the build context, used by Kaniko - within the workspace
       default: src
+    - name: dockerfile
+      default: ./Dockerfile
     - name: pathToYamlFile
       description: The path to the yaml file to deploy within the git source
     - name: imageUrl
@@ -49,24 +51,24 @@ spec:
         - name: source
           workspace: git-source
         - name: dockerconfig
-          workspace: docker-config
+          workspace: dockerconfig
       params:
         - name: CONTEXT
           value: $(params.pathToContext)
         - name: IMAGE
           value: $(params.imageUrl):$(params.imageTag)
+        - name: DOCKERFILE
+          value: $(params.dockerfile)
     - name: deploy-to-cluster
       taskRef:
-        name: deploy-using-kubectl
+        name: helm-upgrade-from-source
       workspaces:
-        - name: git-source
+        - name: source
           workspace: git-source
       params:
-        - name: pathToYamlFile
-          value: $(params.pathToYamlFile)
-        - name: imageUrl
-          value: $(params.imageUrl)
-        - name: imageTag
-          value: $(params.imageTag)
-        - name: imageDigest
-          value: $(tasks.source-to-image.results.IMAGE-DIGEST)
+        - name: charts_dir
+          value: $(params.chartsDir)
+        - name: release_name
+          value: $(params.releaseName)
+        - name: overwrite_values
+          value: image.repository=$(params.imageUrl),image.tag=$(params.imageTag)

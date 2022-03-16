@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  generateName: fraud-detection-service-pipeline
+  generateName: fraud-detection-service-pipeline-
 spec:
   pipelineRef:
     name: build-and-deploy-pipeline
@@ -10,17 +10,23 @@ spec:
       value: https://github.com/jem2305/gdpr-data-cloaking-kafka
     - name: gitRevision
       value: main
-    - name: pathToYamlFile
-      value: k8s/deployment.yaml
+    - name: pathToContext
+      value: fraud-detection-service
+    - name: dockerfile
+      value: fraud-detection-service/Dockerfile
     - name: imageUrl
       value: jem2305/fraud-detection-service
     - name: imageTag
       value: "1.0"
-  serviceAccountName: default
+    - name: chartsDir
+      value: fraud-detection-service/charts/fraud-detection-service
+    - name: releaseName
+      value: fraud-detection-service
+  serviceAccountName: pipeline-account
   workspaces:
     - name: git-source
       persistentVolumeClaim:
-        claimName: picalc-source-pvc
-    - name: docker-config
+        claimName: fraud-detection-service-pipeline-pvc
+    - name: dockerconfig
       secret:
         secretName: docker-config
