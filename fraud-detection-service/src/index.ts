@@ -21,6 +21,9 @@ const logConfiguration = {
 const logger = winston.createLogger(logConfiguration);
 app.use(expressWinston.logger(logConfiguration));
 
+// add bundles to static path
+app.use('/bundles', express.static('dist/bundles'));
+
 // define a route handler for the default home page
 app.get('/', (_req, res) => {
   res.send('Hello world!');

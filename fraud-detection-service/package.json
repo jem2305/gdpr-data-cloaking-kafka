@@ -4,13 +4,14 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "prebuild": "npm run lint && npm run types",
+    "prebuild": "npm run lint && npm run types && npm run bundle",
     "build": "tsc",
     "prestart": "npm run build",
     "start": "node .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint . --ext .js,.jsx,.ts,.tsx",
-    "types": "npx json2ts -i schemas/json -o src/types/"
+    "types": "npx json2ts -i schemas/json -o src/types/",
+    "bundle": "mkdir -p ./dist/bundles && tar -cvzf ./dist/bundles/frauddetection.tar.gz -C ./src/bundles/frauddetection ."
   },
   "keywords": [],
   "author": "",
