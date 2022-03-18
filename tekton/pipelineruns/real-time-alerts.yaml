@@ -1,0 +1,32 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: real-time-alerts-pipeline-
+spec:
+  pipelineRef:
+    name: build-and-deploy-pipeline
+  params:
+    - name: gitUrl
+      value: https://github.com/jem2305/gdpr-data-cloaking-kafka
+    - name: gitRevision
+      value: main
+    - name: pathToContext
+      value: real-time-alerts
+    - name: dockerfile
+      value: real-time-alerts/Dockerfile
+    - name: imageUrl
+      value: jem2305/real-time-alerts
+    - name: imageTag
+      value: "1.0"
+    - name: chartsDir
+      value: real-time-alerts/charts/real-time-alerts
+    - name: releaseName
+      value: real-time-alerts
+  serviceAccountName: pipeline-account
+  workspaces:
+    - name: git-source
+      persistentVolumeClaim:
+        claimName: real-time-alerts-pipeline-pvc
+    - name: dockerconfig
+      secret:
+        secretName: docker-config
