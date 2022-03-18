@@ -1,19 +1,22 @@
 services:
-  localserver:
-    url: http://127.0.0.1:8080/
+  fraud-detection-service:
+    url: http://localhost:8080/
+    response_header_timeout_seconds: 5
+  consent-platform:
+    url: http://localhost:3000/
     response_header_timeout_seconds: 5
 
 bundles:
   frauddetection:
-    service: localserver
-    resource: frauddetection.tar.gz
+    service: fraud-detection-service
+    resource: /bundles/frauddetection.tar.gz
     # persist: true
     polling:
       min_delay_seconds: 5
       max_delay_seconds: 10
   alerts:
-    service: localserver
-    resource: alerts.tar.gz
+    service: consent-platform
+    resource: /bundles/arrangements/security.tar.gz
     # persist: true
     polling:
       min_delay_seconds: 5
