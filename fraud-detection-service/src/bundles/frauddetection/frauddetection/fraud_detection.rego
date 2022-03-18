@@ -8,5 +8,5 @@ input_is_cloaked {
 }
 
 arrangement_in_allowed_list {
-    data.cloaking.allowedArrangements[_] == input.transactionReference.arrangementId
+    data.consents.allowedArrangements[_] == input.transactionReference.arrangementId
 }
