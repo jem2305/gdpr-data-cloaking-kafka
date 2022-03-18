@@ -1,24 +1,28 @@
-FROM node:16-alpine as builder
-RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
-WORKDIR /home/node/app
-COPY package*.json ./
-RUN npm config set unsafe-perm true
-RUN npm install -g typescript
-RUN npm install -g ts-node
+# Check out https://hub.docker.com/_/node to select a new base image
+FROM node:16-slim
+
+# Set to a non-root built-in user `node`
 USER node
+
+# Create app directory (with user `node`)
+RUN mkdir -p /home/node/app
+
+WORKDIR /home/node/app
+
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+COPY --chown=node package*.json ./
+
 RUN npm install
-COPY --chown=node:node . .
+
+# Bundle app source code
+COPY --chown=node . .
+
 RUN npm run build
 
-FROM node:16-alpine
-RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
-WORKDIR /home/node/app
-COPY package*.json ./
-USER node
-RUN npm install --production
-COPY --from=builder /home/node/app/dist ./dist
+# Bind to all network interfaces so that it can be mapped to the host OS
+ENV HOST=0.0.0.0 PORT=3000
 
-COPY --chown=node:node .env .
-
-EXPOSE 8080
-CMD [ "node", "dist/index.js" ]
+EXPOSE ${PORT}
+CMD [ "node", "." ]
