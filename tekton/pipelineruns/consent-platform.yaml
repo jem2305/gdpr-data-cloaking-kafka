@@ -1,0 +1,32 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: consent-platform-pipeline-
+spec:
+  pipelineRef:
+    name: build-and-deploy-pipeline
+  params:
+    - name: gitUrl
+      value: https://github.com/jem2305/gdpr-data-cloaking-kafka
+    - name: gitRevision
+      value: main
+    - name: pathToContext
+      value: consent-platform
+    - name: dockerfile
+      value: consent-platform/Dockerfile
+    - name: imageUrl
+      value: jem2305/consent-platform
+    - name: imageTag
+      value: "1.0"
+    - name: chartsDir
+      value: consent-platform/charts/consent-platform
+    - name: releaseName
+      value: consent-platform
+  serviceAccountName: pipeline-account
+  workspaces:
+    - name: git-source
+      persistentVolumeClaim:
+        claimName: fraud-detection-service-pipeline-pvc
+    - name: dockerconfig
+      secret:
+        secretName: docker-config
