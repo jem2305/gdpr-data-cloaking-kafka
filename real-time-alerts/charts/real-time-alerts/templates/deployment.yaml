@@ -33,7 +33,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8080
               protocol: TCP
           livenessProbe:
             httpGet:
@@ -43,6 +43,9 @@ spec:
             httpGet:
               path: /
               port: http
+          env:
+            - name: MP_MESSAGING_CONNECTOR_SMALLRYE_KAFKA_BOOTSTRAP_SERVERS
+              value: {{ .Values.config.bootstrapServers }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
         - name: open-policy-agent
@@ -50,8 +53,8 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.openPolicyAgent.repository }}:{{ .Values.openPolicyAgent.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["run"]
-          args: ["--server", "--addr :8181", "--config-file /etc/opa/config.yaml"]
+          command: ["opa"]
+          args: ["run", "--server", "--addr :8181", "--config-file /etc/opa/config.yaml"]
           ports:
             - name: http
               containerPort: 8181
@@ -64,6 +67,10 @@ spec:
             httpGet:
               path: /
               port: http
+          volumeMounts:
+            - name: opa-config
+              mountPath: /etc/opa/config.yaml
+              subPath: config.yaml
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
@@ -78,3 +85,7 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+        - name: opa-config
+          configMap:
+            name: {{ include "real-time-alerts.fullname" . }}
