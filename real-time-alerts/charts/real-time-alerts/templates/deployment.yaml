@@ -5,9 +5,7 @@ metadata:
   labels:
     {{- include "real-time-alerts.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
-  {{- end }}
   selector:
     matchLabels:
       {{- include "real-time-alerts.selectorLabels" . | nindent 6 }}

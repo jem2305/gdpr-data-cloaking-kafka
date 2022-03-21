@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: build-and-deploy-pipeline
+  name: mvn-build-and-deploy-pipeline
 spec:
   workspaces:
     - name: git-source
@@ -15,7 +15,7 @@ spec:
       description: Git revision to check out
       default: master
     - name: pathToContext
-      description: The path to the build context, used by Kaniko - within the workspace
+      description: The path to the build context, used by Kaniko & Maven - within the workspace
       default: src
     - name: dockerfile
       default: ./Dockerfile
@@ -46,11 +46,29 @@ spec:
           value: "."
         - name: deleteExisting
           value: "true"
+    - name: maven-run
+      taskRef:
+        name: maven
+      runAfter:
+        - clone-repo
+      params:
+        - name: CONTEXT_DIR
+          value: $(params.pathToContext)
+        - name: GOALS
+          value:
+            - -DskipTests
+            - clean
+            - package
+      workspaces:
+        - name: maven-settings
+          workspace: git-source
+        - name: source
+          workspace: git-source
     - name: source-to-image
       taskRef:
         name: kaniko
       runAfter:
-        - clone-repo
+        - maven-run
       workspaces:
         - name: source
           workspace: git-source

@@ -4,7 +4,7 @@ metadata:
   generateName: fraud-detection-service-pipeline-
 spec:
   pipelineRef:
-    name: build-and-deploy-pipeline
+    name: docker-build-and-deploy-pipeline
   params:
     - name: gitUrl
       value: https://github.com/jem2305/gdpr-data-cloaking-kafka

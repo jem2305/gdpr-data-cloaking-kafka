@@ -1,0 +1,20 @@
+services:
+  fraud-detection-service:
+    url: http://fraud-detection-service/
+    response_header_timeout_seconds: 5
+  consent-platform:
+    url: http://consent-platform/
+    response_header_timeout_seconds: 5
+bundles:
+  frauddetection:
+    service: fraud-detection-service
+    resource: /bundles/frauddetection.tar.gz
+    polling:
+      min_delay_seconds: 5
+      max_delay_seconds: 10
+  alerts:
+    service: consent-platform
+    resource: /bundles/arrangements/security.tar.gz
+    polling:
+      min_delay_seconds: 5
+      max_delay_seconds: 10

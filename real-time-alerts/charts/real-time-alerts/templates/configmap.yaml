@@ -5,5 +5,5 @@ metadata:
   labels:
     {{- include "real-time-alerts.labels" . | nindent 4 }}
 data:
-  config.yaml: |
-    {{- .Values.config.opa | nindent 4 }}
+  config.yaml: |- 
+    {{ .Files.Get "opa/config.yaml" | nindent 4 }}
