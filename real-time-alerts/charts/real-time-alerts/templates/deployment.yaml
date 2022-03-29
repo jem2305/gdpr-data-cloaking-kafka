@@ -37,11 +37,11 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: /q/health/live
               port: http
           readinessProbe:
             httpGet:
-              path: /
+              path: /q/health/ready
               port: http
           env:
             - name: MP_MESSAGING_CONNECTOR_SMALLRYE_KAFKA_BOOTSTRAP_SERVERS
@@ -53,8 +53,7 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.openPolicyAgent.repository }}:{{ .Values.openPolicyAgent.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["opa"]
-          args: ["run", "--server", "--addr :8181", "--config-file /etc/opa/config.yaml"]
+          args: ["run", "--server", "--config-file", "/etc/opa/config.yaml"]
           ports:
             - name: http
               containerPort: 8181
