@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "marketing-platform-etl.labels" . | nindent 4 }}
 spec:
-  schedule: {{ .Values.job.schedule }}
+  schedule: "{{ .Values.job.schedule }}"
   jobTemplate:
     spec:
       template:
