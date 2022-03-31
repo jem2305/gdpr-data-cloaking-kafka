@@ -11,6 +11,9 @@ image:
 job:
   schedule: "* * * * *"
 
+config:
+  bootstrapServers: strimzi-kafka-kafka-bootstrap:9092
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
