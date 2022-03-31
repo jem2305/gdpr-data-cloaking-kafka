@@ -29,11 +29,47 @@ spec:
       transaction.state.log.min.isr: 1
       default.replication.factor: 1
       min.insync.replicas: 1
+    resources:
+      requests:
+        memory: 2Gi
+        cpu: 512m
+      limits:
+        memory: 2Gi
+        cpu: 512m
   zookeeper:
     replicas: 1
     storage:
       type: persistent-claim
       size: 5Gi
-  entityOperator:
-    topicOperator: {}
-    userOperator: {}
+    resources:
+      requests:
+        memory: 2Gi
+        cpu: 512m
+      limits:
+        memory: 2Gi
+        cpu: 512m
+  # entityOperator:
+  #   tlsSidecar:
+  #     resources:
+  #       requests:
+  #         cpu: 200m
+  #         memory: 64Mi
+  #       limits:
+  #         cpu: 200m
+  #         memory: 64Mi
+  #   topicOperator:
+  #     resources:
+  #       requests:
+  #         memory: 128Mi
+  #         cpu: 256m
+  #       limits:
+  #         memory: 128Mi
+  #         cpu: 256m
+  #   userOperator:
+  #     resources:
+  #       requests:
+  #         memory: 128Mi
+  #         cpu: 256m
+  #       limits:
+  #         memory: 128Mi
+  #         cpu: 256m
